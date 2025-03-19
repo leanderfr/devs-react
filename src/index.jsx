@@ -5,7 +5,7 @@ import Main from './Main';
 import Sidebar from './Sidebar';
 
 
-import reportWebVitals from './reportWebVitals';
+//import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,4 +17,4 @@ root.render(
   </React.StrictMode>
 );
 
-reportWebVitals();
+//reportWebVitals();
