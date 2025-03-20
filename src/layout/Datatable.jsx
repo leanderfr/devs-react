@@ -1,5 +1,5 @@
 
-import './index.css';
+import 'css/index.css';
 
 function Datatable() {
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Main from './Main';
-import Sidebar from './Sidebar';
+import 'css/index.css';
+import Main from 'layout/Main.jsx';
+import Sidebar from 'layout/Sidebar.jsx';
 
 
 //import reportWebVitals from './reportWebVitals';

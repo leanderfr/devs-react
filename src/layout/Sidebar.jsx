@@ -1,15 +1,20 @@
 
-import './index.css';
-import ItemMenu from './ItemMenu.jsx';
+import 'css/index.css';
+import ItemMenu from 'layout/ItemMenu.jsx';
 
 let developers = 'Desenvolvedores'
 let languages = 'Linguagens'
 
+
 function Sidebar() {
+
   return (
     <div className="Sidebar">
 
-      <img src='images/react.png' alt='' />
+      <div className='logoReact'>
+        <img src='images/react.png' alt='' style={{ width: '50px'}} />
+        <span >React JS - Demo Application</span>
+      </div>
 
       <ItemMenu text={ developers } />
       <ItemMenu text={ languages } />
