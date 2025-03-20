@@ -12,7 +12,7 @@ function Sidebar() {
     <div className="Sidebar">
 
       <div className='logoReact'>
-        <img src='images/react.png' alt='' style={{ width: '50px'}} />
+        <img src='images/react.png' alt='' style={{ width: '70px'}} />
         <span >React JS - Demo Application</span>
       </div>
 

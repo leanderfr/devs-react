@@ -9,7 +9,37 @@ function Header() {
   return (
     <div className="Header">
 
-      <div>Current Back end</div>
+      <div className={'stackSelector'}>
+        <div style={{ marginBottom:'5px' }}>
+          CURRENT FRONT END
+        </div>
+        <div className={'stackItemClicked'}> 
+          <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+            <img src='images/react2.png' alt='' style={{ width: '30px'}} />
+            <span>React JS</span>
+          </div>
+          <div className='gitIcon'>
+            <img src='images/git.svg' alt='' style={{ width: '20px'}} />
+          </div>  
+        </div>
+
+        <div className={'stackItem'}> 
+          <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+            <img src='images/vue.png' alt='' style={{ width: '30px'}} />
+            <span>Vue JS</span>
+          </div>
+          <div className='gitIcon'>
+            <img src='images/git.svg' alt='' style={{ width: '20px'}} />
+          </div>
+        </div>
+
+      </div>
+
+
+      <div className={'stackSelector'}>
+        CURRENT BACK END
+      </div>
+
 
       <div className="countrySelect">    
 
@@ -26,8 +56,6 @@ function Header() {
           <img src='images/usa_flag.svg' alt='' />
         </div>
       </div>
-
-      <div>leanderprogrammer@gmail.com</div>
 
     </div>
   );
