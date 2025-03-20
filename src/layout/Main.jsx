@@ -1,7 +1,7 @@
 
-import 'css/index.css';
-import Header from 'layout/Header';
-import Datatable from 'layout/Datatable';
+import '../css/index.css';
+import Header from './Header';
+import Datatable from './Datatable';
 
 
 function Main() {

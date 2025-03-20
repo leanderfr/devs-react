@@ -1,6 +1,6 @@
 
-import 'css/index.css';
-import ItemMenu from 'layout/ItemMenu.jsx';
+import '../css/index.css';
+import ItemMenu from './ItemMenu.jsx';
 
 let developers = 'Desenvolvedores'
 let languages = 'Linguagens'
