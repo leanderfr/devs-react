@@ -87,6 +87,17 @@ input:checked + .slider_language:before {
 }
 
 
+.teste {
+font-size:40px
+}
+.Content {
+  display: flex;
+  flex-direction: row;
+  width:100vw;
+  height:100vh;
+  background-color: yellow;;
+}
+
 .Sidebar {
   display: flex;
   flex-direction: column;
@@ -100,8 +111,7 @@ input:checked + .slider_language:before {
   display: flex;
   flex-direction: column;
   flex-basis: 80%;
-  flex:1;
-  
+  flex:1;  
 }
 
 .Header {

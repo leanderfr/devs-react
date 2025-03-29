@@ -1,17 +1,26 @@
-
+import { useState, useEffect } from 'react';
 import '../css/index.css';
-import { useState } from 'react';
 
 
-function Header() {
-  const [isUSAChecked, setUSAChecked] = useState(true)
+
+function Header( props ) {
+
+  const [isUSAChecked, setUSAChecked] = useState( props.isUSAChecked )
+
+  const changeLanguage = ( isUSAChecked ) => {
+    setUSAChecked( isUSAChecked )
+    props.onChangeLanguage( isUSAChecked );
+  };
+
+
+
 
   return (
-    <div className="Header">
+    <>
 
       <div className={'stackSelector'}>
         <div style={{ marginBottom:'5px' }}>
-          CURRENT FRONT END
+          expressions.frontend
         </div>
         <div className={'stackItemClicked'}> 
           <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
@@ -43,21 +52,21 @@ function Header() {
 
       <div className="countrySelect">    
 
-        <div className={`${! isUSAChecked ? "flagClicked" : "flagUnclicked"}`}  id='flagBRAZIL' onClick={ () => setUSAChecked(false) }  >         
+        <div className={`${! isUSAChecked ? "flagClicked" : "flagUnclicked"}`}  id='flagBRAZIL' onClick={ () => changeLanguage(false) }  >         
           <img src='images/brazil_flag.svg' alt='' />
         </div>
 
         <label htmlFor="chkLanguageSelector" className="switch_language"  >
-          <input id="chkLanguageSelector" type="checkbox"  checked={isUSAChecked}  onChange={ () => {setUSAChecked(isUSAChecked => ! isUSAChecked)  } } />
+          <input id="chkLanguageSelector" type="checkbox"  checked={isUSAChecked}  onChange={ () => {changeLanguage(isUSAChecked => ! isUSAChecked)  } } />
           <span className="slider_language round"></span>
         </label>
 
-        <div className={`${isUSAChecked ? "flagClicked" : "flagUnclicked"}`}  id='flagBRAZIL' onClick={ () => setUSAChecked(true) }  >         
+        <div className={`${isUSAChecked ? "flagClicked" : "flagUnclicked"}`}  id='flagBRAZIL' onClick={ () => changeLanguage(true) }  >         
           <img src='images/usa_flag.svg' alt='' />
         </div>
       </div>
 
-    </div>
+    </>
   );
 }
 

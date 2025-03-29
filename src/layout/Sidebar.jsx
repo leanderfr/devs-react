@@ -9,7 +9,8 @@ let languages = 'Linguagens'
 function Sidebar() {
 
   return (
-    <div className="Sidebar">
+
+    <>
 
       <div className='logoReact'>
         <img src='images/react.png' alt='' style={{ width: '70px'}} />
@@ -18,8 +19,7 @@ function Sidebar() {
 
       <ItemMenu text={ developers } />
       <ItemMenu text={ languages } />
-        
-    </div>
+    </>        
   );
 }
 
