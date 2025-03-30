@@ -23,25 +23,32 @@ function Main() {
 
   let [divLoadingReady, setDivLoadingReady, getDivLoadingReady] = useState(false)
   let [isUSAChecked, changeLanguage, getLanguage] = useState(true)
-  let [isLoading, setIsLoading, getIsLoading] = useState(true)
+  let [isLoading, setIsLoading] = useState(true)
 
   let [expressions, setExpressions, getExpressions] = useState(null)
-  //const [isLoading, setIsLoading] = useState(true)
 //  const [error, setError] = useState(null)
+
+  const changeLanguageAndReloadExpressions = ( isUSAChecked ) => {
+    setDivLoadingReady(false)
+    setIsLoading(true)
+    changeLanguage(isUSAChecked)   // define novo idioma que foi recebido de 'Header.jsx'
+    setExpressions(null)   // recarrega expressoes do idioma atual
+  } 
+
 
   const fetchExpressions = async ()  => {
     expressions = null;
-    setIsLoading(true)
-    setDivLoadingReady(true)   // avisa que ja configurou animacao ajax
+    setIsLoading(true)         // remove animacao ajax 'carregando...'
+    setDivLoadingReady(true)   // se chegou aqui, obrigatoriamente ja configurou animacao ajax
 
-
-    let language = isUSAChecked ? 'english' : 'portuguese';
+    let _isUSAChecked = getLanguage.current
+    let language = _isUSAChecked ? 'english' : 'portuguese';
 
     fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=expressions&language=${language}`)
     .then((response) => response.json())
     .then((data) => {
       console.log('chegou='+data)
-      expressions = data;
+      setExpressions(data);
       setIsLoading(false)
     })
     .catch((error) => console.log('erro='+error));
@@ -55,7 +62,7 @@ function Main() {
   useEffect( () => {
 
     // se ainda nao preparou animacao ajax
-    if (! getDivLoadingReady.current) {
+    if (! getDivLoadingReady.current)  {
 
         // propriedades da animacao que sera exibida dentro de 'divLoading', sempre que houver uma requisicao ao server-side
         var opts = {
@@ -88,8 +95,15 @@ function Main() {
     }
   
     // carrega expressoes do idioma atual
-    if ( getExpressions.current == null ) fetchExpressions()
-  })
+    // força 1/2 segundo de parada para que usuario perceba que esta recarregando
+    if ( getExpressions.current == null )    
+      setTimeout(() => {
+        fetchExpressions()    
+      }, 500);
+
+
+
+  }, [expressions])
 
 
 
@@ -97,30 +111,34 @@ function Main() {
 
     <div className="Content">
 
+      <div className='Sidebar'>
+        <Sidebar  />
+      </div>
 
-        <div id='backdrop'>
-          <div id='divLoading' >&nbsp;</div>
-          </div>
+      <div className="Main">
 
-      { 1==2 && 
-          <>
-          <div className='Sidebar'>
-            <Sidebar  />
-          </div>
+          <div className='Header'>
+            { isLoading && 
+              <Header onChangeLanguage={changeLanguageAndReloadExpressions} isUSAChecked={isUSAChecked}   /> }
 
-          <div className="Main">
-
-              <div className='Header'>
-                <Header onChangeLanguage={changeLanguage} isUSAChecked={isUSAChecked}  />
-              </div>
-
-              <div className='Datatable'>
-                <Datatable />
-              </div>
+            { expressions && 
+              <Header onChangeLanguage={changeLanguageAndReloadExpressions} isUSAChecked={isUSAChecked} expressions={expressions}  /> }
 
           </div>
-          </>
+
+          <div className='Datatable'>
+            <Datatable />
+          </div>
+
+      </div>
+
+      { isLoading && 
+          <div id='backdropWhite'>
+            <div id='divLoading' >&nbsp;</div>
+          </div>
+
       }
+
 
     </div>    
   );

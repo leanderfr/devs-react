@@ -247,9 +247,10 @@ border-radius: 5px;
 display:flex;
 }
 
-#backdrop {
+#backdropWhite {
 position: absolute;
-background-color: rgba(0,0,0,0.1);
+/*background-color: rgba(0,0,0,0.1);*/
+background-color: transparent;
 left: 0;
 top: 0;
 width: 100%;
@@ -266,7 +267,7 @@ align-items: center;
 
 #divLoading {
     width: 120px;
-    height: 90px;
+    height: 70px;
     position: fixed;
     z-index: 1020999;
     background: rgba(100, 149, 237, 0.4);
