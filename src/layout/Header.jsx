@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import '../css/index.css';
+import {  SharedContext } from './Main.jsx';
 
 
-// recebe expressoes (frases), backend atual e idioma atual de Main.jsx e exibe aqui no header
+// props= recebe funcoes que fazem a comunicacao entre Header.jsx e Main.jsx
 // se Main.jsx ainda esta carregando dados, exibe Header.jsx com frases e configuracoes em branco/padrao
 function Header( props ) {
 
-  let [isUSAChecked, setUSAChecked] = useState( typeof props.isUSAChecked != 'undefined' ? props.isUSAChecked : true  )
-  let [expressions] = useState(props.expressions)
+  // expressions só poderá ser usada quando Main.jsx enviar seu conteudo diferente de 'null'
+  let { _expressions, _isUSAChecked, _currentBackend }  = useContext(SharedContext);  
 
-  let [expressionsOk] = useState( typeof expressions != 'undefined' )
-  let [currentBackend, setCurrentBackend] = useState( typeof props.currentBackend != 'undefined' ? props.currentBackend : '' )
+  let [isUSAChecked, setUSAChecked] = useState( typeof _isUSAChecked != 'undefined' ? _isUSAChecked : true  )
+  let [expressions] = useState(_expressions)
+
+  let [currentBackend, setCurrentBackend] = useState( typeof _currentBackend != 'undefined' ? _currentBackend : '' )
 
   // usuario alterou idioma, dispara evento 'onChangeLanguage' em Main.jsx
   const changeLanguage = ( isUSAChecked ) => {
@@ -38,7 +41,7 @@ function Header( props ) {
       {/* seletor de front end */}
       <div className={'stackSelector'}>
         <div className={'stackType'} >
-          { expressionsOk &&  expressions.frontend }          
+          { expressions!=null &&  expressions.frontend }          
         </div>
         <div className={'stackItemClicked'}> 
           <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
@@ -66,7 +69,7 @@ function Header( props ) {
       {/* seletor de back end */}
       <div className={'stackSelector'}>
         <div className={'stackType'} >
-          { expressionsOk &&  expressions.backend }          
+          { expressions!=null &&  expressions.backend }          
         </div>
 
         <div className={`${currentBackend === "laravel" ? "stackItemClicked" : "stackItem"}`} onClick={ () => changeBackend('laravel') }   > 

@@ -1,15 +1,15 @@
 
 import '../css/index.css';
 import ItemMenu from './ItemMenu.jsx';
-import { useContext, useState } from 'react';
-import {  ExpressionsContext } from './Main.jsx';
+import { useContext } from 'react';
+import {  SharedContext } from './Main.jsx';
 
-//let developers = 'Desenvolvedores'
-//let languages = 'Linguagens'
+
 
 function Sidebar() {
 
-  let expressions  = useContext(ExpressionsContext);  
+  // expressions só poderá ser usada quando Main.jsx enviar seu conteudo diferente de 'null'
+  let { _expressions }  = useContext(SharedContext);  
 
   return (
 
@@ -20,8 +20,8 @@ function Sidebar() {
         <span >React JS - Demo Application</span>
       </div>
 
-      { expressions!=null && <ItemMenu text={expressions.developers} /> } 
-      { expressions!=null && <ItemMenu text={expressions.languages} /> } 
+      { _expressions!=null && <ItemMenu text={_expressions.developers} /> } 
+      { _expressions!=null && <ItemMenu text={_expressions.languages} /> } 
     </>        
   );
 }

@@ -19,7 +19,7 @@ import 'jquery-ui-bundle/jquery-ui.min.css';
 import 'spin.js/spin.css';
 import {Spinner} from 'spin.js';
 
-export const ExpressionsContext = createContext();
+export const SharedContext = createContext();
 
 
 function Main() {
@@ -118,35 +118,38 @@ function Main() {
 
     <div className="Content">
 
-      <ExpressionsContext.Provider value={expressions}  >
+      {/* context => compartilha idioma, expressoes e backend  atual entre os componentes */}
+      <SharedContext.Provider value={{ _expressions: expressions, _isUSAChecked: isUSAChecked, _currentBackend: currentBackend  }}  >
+
+          {/* barra lateral esquerda */}
           <div className='Sidebar'>
                 <Sidebar  />
           </div>
-      </ExpressionsContext.Provider>
 
-      <div className="Main">
+          {/* header e datatable */}
+          <div className="Main">
 
-          <div className='Header'>
-            {/* se esta carregando expressoes ainda, carrega Header sem dados, só parte visual */}
-            { isLoading && 
-              <Header  /> }
+              <div className='Header'>
+                {/* se esta carregando expressoes ainda, carrega Header sem dados, só parte visual */}
+                { isLoading && 
+                  <Header  /> }
 
-            {/* se ja carregou expressoes, carrega Header com as frases do idiomas atual */}
-            { expressions && 
-              <Header 
-                isUSAChecked={isUSAChecked} 
-                onChangeLanguage={changeLanguageAndReload} 
-                currentBackend = {currentBackend} 
-                onChangeBackend={changeBackendAndReload} 
-                expressions={expressions}  /> }
+                {/* se ja carregou expressoes, carrega Header com as frases do idiomas atual */}
+                { expressions && 
+                  <Header                 
+                    onChangeLanguage={changeLanguageAndReload}                 
+                    onChangeBackend={changeBackendAndReload} 
+                  /> }
+
+              </div>
+
+              <div className='Datatable'>
+                <Datatable />
+              </div>
 
           </div>
 
-          <div className='Datatable'>
-            <Datatable />
-          </div>
-
-      </div>
+      </SharedContext.Provider>
 
       { isLoading && 
           <div id='backdropWhite'>
