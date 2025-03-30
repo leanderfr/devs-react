@@ -1,5 +1,6 @@
 
-import { useEffect } from 'react';
+import { useEffect, createContext } from 'react';
+
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
 // fazer isso com useState padrao do react é muito complicado
@@ -17,6 +18,8 @@ import 'jquery-ui-bundle/jquery-ui.min.css';
 
 import 'spin.js/spin.css';
 import {Spinner} from 'spin.js';
+
+export const ExpressionsContext = createContext();
 
 
 function Main() {
@@ -111,14 +114,15 @@ function Main() {
   }, [expressions])
 
 
-
   return (
 
     <div className="Content">
 
-      <div className='Sidebar'>
-        <Sidebar  />
-      </div>
+      <ExpressionsContext.Provider value={expressions}  >
+          <div className='Sidebar'>
+                <Sidebar  />
+          </div>
+      </ExpressionsContext.Provider>
 
       <div className="Main">
 

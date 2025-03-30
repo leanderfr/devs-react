@@ -37,7 +37,7 @@ function Header( props ) {
 
       {/* seletor de front end */}
       <div className={'stackSelector'}>
-        <div style={{ marginBottom:'5px', height: '20px' }}>
+        <div className={'stackType'} >
           { expressionsOk &&  expressions.frontend }          
         </div>
         <div className={'stackItemClicked'}> 
@@ -65,7 +65,7 @@ function Header( props ) {
 
       {/* seletor de back end */}
       <div className={'stackSelector'}>
-        <div style={{ marginBottom:'5px', height: '20px' }}>
+        <div className={'stackType'} >
           { expressionsOk &&  expressions.backend }          
         </div>
 

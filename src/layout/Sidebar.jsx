@@ -1,12 +1,15 @@
 
 import '../css/index.css';
 import ItemMenu from './ItemMenu.jsx';
+import { useContext, useState } from 'react';
+import {  ExpressionsContext } from './Main.jsx';
 
-let developers = 'Desenvolvedores'
-let languages = 'Linguagens'
-
+//let developers = 'Desenvolvedores'
+//let languages = 'Linguagens'
 
 function Sidebar() {
+
+  let expressions  = useContext(ExpressionsContext);  
 
   return (
 
@@ -17,8 +20,8 @@ function Sidebar() {
         <span >React JS - Demo Application</span>
       </div>
 
-      <ItemMenu text={ developers } />
-      <ItemMenu text={ languages } />
+      { expressions!=null && <ItemMenu text={expressions.developers} /> } 
+      { expressions!=null && <ItemMenu text={expressions.languages} /> } 
     </>        
   );
 }
