@@ -6,11 +6,9 @@ import Main from './layout/Main.jsx';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// React.StrictMode retirado porque renderiza o componente 2x
 root.render(
-  <React.StrictMode>
-
         <Main />
-
-  </React.StrictMode>
 );
 

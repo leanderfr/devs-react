@@ -6,16 +6,8 @@ import '../css/index.css';
 function Header( props ) {
 
   const [isUSAChecked, setUSAChecked] = useState( props.isUSAChecked )
-  const [expressions] = useState(props.expressions )
-
-//  console.log('exp='+props.expressions)
-
-if ( typeof expressions !== 'undefined') {
-//let rr= JSON.parse( JSON.stringify(props.expressions))
-let rr= JSON.stringify(props.expressions)
-
-console.log('olha='+  rr)
-}
+  const [expressions] = useState(props.expressions)
+  const [expressionsOk] = useState( typeof expressions != 'undefined' )
 
   const changeLanguage = ( isUSAChecked ) => {
     setUSAChecked(isUSAChecked)
@@ -29,9 +21,8 @@ console.log('olha='+  rr)
     <>
 
       <div className={'stackSelector'}>
-        <div style={{ marginBottom:'5px' }}>
-          { typeof expressions !== 'undefined' &&  expressions['frontend'] }
-          
+        <div style={{ marginBottom:'5px', minHeight: '20px' }}>
+          { expressionsOk &&  expressions.frontend }          
         </div>
         <div className={'stackItemClicked'}> 
           <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
