@@ -2,26 +2,42 @@ import { useState } from 'react';
 import '../css/index.css';
 
 
-
+// recebe expressoes (frases), backend atual e idioma atual de Main.jsx e exibe aqui no header
+// se Main.jsx ainda esta carregando dados, exibe Header.jsx com frases e configuracoes em branco/padrao
 function Header( props ) {
 
-  const [isUSAChecked, setUSAChecked] = useState( props.isUSAChecked )
-  const [expressions] = useState(props.expressions)
-  const [expressionsOk] = useState( typeof expressions != 'undefined' )
+  let [isUSAChecked, setUSAChecked] = useState( typeof props.isUSAChecked != 'undefined' ? props.isUSAChecked : true  )
+  let [expressions] = useState(props.expressions)
 
+  let [expressionsOk] = useState( typeof expressions != 'undefined' )
+  let [currentBackend, setCurrentBackend] = useState( typeof props.currentBackend != 'undefined' ? props.currentBackend : '' )
+
+  // usuario alterou idioma, dispara evento 'onChangeLanguage' em Main.jsx
   const changeLanguage = ( isUSAChecked ) => {
-    setUSAChecked(isUSAChecked)
-    props.onChangeLanguage( isUSAChecked );
+    setUSAChecked(isUSAChecked)    // muda visualmente
+    setTimeout(() => {
+      props.onChangeLanguage( isUSAChecked );
+    }, 100);
+
   };
 
+  // usuario alterou idioma, dispara evento 'onChangeLanguage' em Main.jsx
+  const changeBackend = ( backend ) => {
+    setCurrentBackend(backend)   // muda visualmente
+    setTimeout(() => {
+      props.onChangeBackend( backend );  
+    }, 100);
+    
+  };
 
 
 
   return (
     <>
 
+      {/* seletor de front end */}
       <div className={'stackSelector'}>
-        <div style={{ marginBottom:'5px', minHeight: '20px' }}>
+        <div style={{ marginBottom:'5px', height: '20px' }}>
           { expressionsOk &&  expressions.frontend }          
         </div>
         <div className={'stackItemClicked'}> 
@@ -47,11 +63,35 @@ function Header( props ) {
       </div>
 
 
+      {/* seletor de back end */}
       <div className={'stackSelector'}>
-        CURRENT BACK END
+        <div style={{ marginBottom:'5px', height: '20px' }}>
+          { expressionsOk &&  expressions.backend }          
+        </div>
+
+        <div className={`${currentBackend === "laravel" ? "stackItemClicked" : "stackItem"}`} onClick={ () => changeBackend('laravel') }   > 
+          <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+            <img src='images/laravel.png' alt='' style={{ width: '30px'}} />
+            <span>Laravel</span>
+          </div>
+          <div className='gitIcon'>
+            <img src='images/git.svg' alt='' style={{ width: '20px'}} />
+          </div>  
+        </div>
+
+        <div className={`${currentBackend === "node" ? "stackItemClicked" : "stackItem"}`}    onClick={ () => changeBackend('node') }  > 
+          <div style={{ display:'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' }}>
+            <img src='images/node.png' alt='' style={{ width: '30px'}} />
+            <span>Node.js</span>
+          </div>
+          <div className='gitIcon'>
+            <img src='images/git.svg' alt='' style={{ width: '20px'}} />
+          </div>
+        </div>
       </div>
 
 
+      {/* seletor do idioma */}
       <div className="countrySelect">    
 
         <div className={`${! isUSAChecked ? "flagClicked" : "flagUnclicked"}`}  id='flagBRAZIL' onClick={ () => changeLanguage(false) }  >         

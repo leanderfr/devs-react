@@ -21,85 +21,90 @@ import {Spinner} from 'spin.js';
 
 function Main() {
 
-  let [divLoadingReady, setDivLoadingReady, getDivLoadingReady] = useState(false)
-  let [isUSAChecked, changeLanguage, getLanguage] = useState(true)
+  // controla se o idioma inglês esta selecionado no momento (via checkbox)
+  let [isUSAChecked, setUSAChecked, getUSAChecked] = useState(true)
+
+  // controla backend atual
+  let [currentBackend, setCurrentBackend] = useState('laravel')
+
+
   let [isLoading, setIsLoading] = useState(true)
 
+  // expressoes/frases usadas dependendo do idioma selecionado
   let [expressions, setExpressions, getExpressions] = useState(null)
 //  const [error, setError] = useState(null)
 
-  const changeLanguageAndReloadExpressions = ( isUSAChecked ) => {
-    setDivLoadingReady(false)
+  // usuario mudou idioma atual em Header.jsx, recarrega 
+  const changeLanguageAndReload = ( isUSAChecked ) => {
     setIsLoading(true)
-    changeLanguage(isUSAChecked)   // define novo idioma que foi recebido de 'Header.jsx'
-    setExpressions(null)   // recarrega expressoes do idioma atual
+    setUSAChecked(isUSAChecked)   // define novo idioma que foi recebido de 'Header.jsx'
+    setExpressions(null)   // dispara useEffect 
+  } 
+
+  // usuario mudou backend em header.jsx, recarrega 
+  const changeBackendAndReload = ( backend ) => {
+    setIsLoading(true)
+    setCurrentBackend(backend)   
+    setExpressions(null)   // dispara useEffect 
   } 
 
 
-  const fetchExpressions = async ()  => {
-    expressions = null;
-    setIsLoading(true)         // remove animacao ajax 'carregando...'
-    setDivLoadingReady(true)   // se chegou aqui, obrigatoriamente ja configurou animacao ajax
 
-    let _isUSAChecked = getLanguage.current
+  const fetchExpressions = async () =>  {
+
+    let _isUSAChecked = getUSAChecked.current
     let language = _isUSAChecked ? 'english' : 'portuguese';
 
     fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=expressions&language=${language}`)
     .then((response) => response.json())
     .then((data) => {
       console.log('chegou='+data)
-      setExpressions(data);
       setIsLoading(false)
+      setExpressions(data);
     })
     .catch((error) => console.log('erro='+error));
-
-
-//isLoading
 
   }
 
 
   useEffect( () => {
 
-    // se ainda nao preparou animacao ajax
-    if (! getDivLoadingReady.current)  {
+      // react exibe/remove animacao ajax, necessario refazer propriedades da animacao sempre que for reexibida (useEffect)
+      var opts = {
+        lines: 12 // The number of lines to draw
+      , length: 40 // The length of each line
+      , width: 18 // The line thickness
+      , radius: 42 // The radius of the inner circle
+      , scale: 0.3 // Scales overall size of the spinner
+      , corners: 3 // Corner roundness (0..1)
+      , color: 'gray' // #rgb or #rrggbb or array of colors
+      , opacity: 0.3 // Opacity of the lines
+      , rotate: 0 // The rotation offset
+      , direction: 1 // 1: clockwise, -1: counterclockwise
+      , speed: 1 // Rounds per second
+      , trail: 60 // Afterglow percentage
+      , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+      , zIndex: 2e9 // The z-index (defaults to 2000000000)
+      , className: 'spinner' // The CSS class to assign to the spinner
+      , top: '50%' // Top position relative to parent
+      , left: '50%' // Left position relative to parent
+      , shadow: true // Whether to render a shadow
+      , hwaccel: true // Whether to use hardware acceleration
+      , position: 'absolute' // Element positioning
+      ,animation: 'spinner-line-fade-quick'
+      }
 
-        // propriedades da animacao que sera exibida dentro de 'divLoading', sempre que houver uma requisicao ao server-side
-        var opts = {
-          lines: 12 // The number of lines to draw
-        , length: 40 // The length of each line
-        , width: 18 // The line thickness
-        , radius: 42 // The radius of the inner circle
-        , scale: 0.3 // Scales overall size of the spinner
-        , corners: 3 // Corner roundness (0..1)
-        , color: 'gray' // #rgb or #rrggbb or array of colors
-        , opacity: 0.3 // Opacity of the lines
-        , rotate: 0 // The rotation offset
-        , direction: 1 // 1: clockwise, -1: counterclockwise
-        , speed: 1 // Rounds per second
-        , trail: 60 // Afterglow percentage
-        , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-        , zIndex: 2e9 // The z-index (defaults to 2000000000)
-        , className: 'spinner' // The CSS class to assign to the spinner
-        , top: '50%' // Top position relative to parent
-        , left: '50%' // Left position relative to parent
-        , shadow: true // Whether to render a shadow
-        , hwaccel: true // Whether to use hardware acceleration
-        , position: 'absolute' // Element positioning
-        ,animation: 'spinner-line-fade-quick'
-        }
-
-        // para exibir/ocultar esta div, usar as funcoes: showLoadingGif()/hideLoadingGif()
-        var divLoading = document.getElementById('divLoading');
-        new Spinner(opts).spin(divLoading);
-    }
+      // para exibir/ocultar esta div, usar as funcoes: showLoadingGif()/hideLoadingGif()
+      var divLoading = document.getElementById('divLoading');
+      new Spinner(opts).spin(divLoading);
   
-    // carrega expressoes do idioma atual
-    // força 1/2 segundo de parada para que usuario perceba que esta recarregando
-    if ( getExpressions.current == null )    
-      setTimeout(() => {
-        fetchExpressions()    
-      }, 500);
+      // carrega expressoes do idioma atual
+      // força 1/2 segundo de parada para que usuario perceba que esta recarregando
+      // necessario testar de 'expressions' nulo, se nao react executa useEffect sem parar
+      if ( getExpressions.current == null )    
+        setTimeout(() => {
+          fetchExpressions()    
+        }, 500);
 
 
 
@@ -118,11 +123,18 @@ function Main() {
       <div className="Main">
 
           <div className='Header'>
+            {/* se esta carregando expressoes ainda, carrega Header sem dados, só parte visual */}
             { isLoading && 
-              <Header onChangeLanguage={changeLanguageAndReloadExpressions} isUSAChecked={isUSAChecked}   /> }
+              <Header  /> }
 
+            {/* se ja carregou expressoes, carrega Header com as frases do idiomas atual */}
             { expressions && 
-              <Header onChangeLanguage={changeLanguageAndReloadExpressions} isUSAChecked={isUSAChecked} expressions={expressions}  /> }
+              <Header 
+                isUSAChecked={isUSAChecked} 
+                onChangeLanguage={changeLanguageAndReload} 
+                currentBackend = {currentBackend} 
+                onChangeBackend={changeBackendAndReload} 
+                expressions={expressions}  /> }
 
           </div>
 

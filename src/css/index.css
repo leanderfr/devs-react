@@ -212,6 +212,7 @@ align-items: center;
 width:70%;
 padding-left: 15px;
 padding-right: 15px;
+height:35px;
 }
 .stackItem:hover {
 cursor: pointer;
@@ -227,6 +228,7 @@ justify-content: space-between;
 gap:10px;
 align-items: center;
 width:70%;
+height:35px;
 padding-left: 15px;
 padding-right: 15px;
 cursor:pointer;
