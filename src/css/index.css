@@ -133,6 +133,7 @@ font-size:40px
   flex-direction: column;
   flex: 1;
   background-color: white;
+  padding:20px;
 }
 
 .ItemMenu {
@@ -290,4 +291,56 @@ align-items: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding-top: 29px;
+}
+
+.CrudButtons {
+height:80px;
+display: flex;
+justify-content: space-between;
+}
+
+.CrudButton {
+background-color: #ECECEC;
+color:black;
+width:auto;
+height:30px;
+display: flex;
+justify-content: space-between;
+cursor:pointer;
+align-items: center;
+border-radius: 5px;
+border: solid 1px lightgray;
+font-size:12px;
+}
+.CrudButton:hover {
+background-color:  #d6e5fc;
+}
+
+.searchBox {
+height:90%;
+width:100%;
+background-color: transparent;
+padding-left: 20px;
+border: none;
+}
+
+.searchBox:hover {
+background-color:  transparent;
+border: none;
+cursor:pointer;
+}
+.searchBox:focus {
+background-color: transparent;
+outline:none;
+}
+
+.magnifyingSearch {
+display: flex;
+justify-content: center;
+width: 70px;
+height: 100%; 
+border-left: solid 1px gray; 
+}
+.magnifyingSearch:hover {
+background-color:  #FFC266
 }
