@@ -30,6 +30,9 @@ function Main() {
   // controla backend atual
   let [currentBackend, setCurrentBackend] = useState('laravel')
 
+  // controla item do menu lateral (sidebar) atualmente clicado
+  let [currentMenuItem, setCurrentMenuItem] = useState('itemMenuDevelopers')
+
 
   let [isLoading, setIsLoading] = useState(true)
 
@@ -61,7 +64,6 @@ function Main() {
     fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=expressions&language=${language}`)
     .then((response) => response.json())
     .then((data) => {
-      console.log('chegou='+data)
       setIsLoading(false)
       setExpressions(data);
     })
@@ -119,7 +121,12 @@ function Main() {
     <div className="Content">
 
       {/* context => compartilha idioma, expressoes e backend  atual entre os componentes */}
-      <SharedContext.Provider value={{ _expressions: expressions, _isUSAChecked: isUSAChecked, _currentBackend: currentBackend  }}  >
+      <SharedContext.Provider 
+        value={{ 
+            _expressions: expressions, 
+            _isUSAChecked: isUSAChecked, 
+            _currentBackend: currentBackend, 
+            _currentMenuItem: currentMenuItem  }}  >
 
           {/* barra lateral esquerda */}
           <div className='Sidebar'>
@@ -155,7 +162,6 @@ function Main() {
           <div id='backdropWhite'>
             <div id='divLoading' >&nbsp;</div>
           </div>
-
       }
 
 

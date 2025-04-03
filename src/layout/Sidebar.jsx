@@ -20,8 +20,8 @@ function Sidebar() {
         <span >React JS - Demo Application</span>
       </div>
 
-      { _expressions!=null && <ItemMenu text={_expressions.developers} /> } 
-      { _expressions!=null && <ItemMenu text={_expressions.languages} /> } 
+      { _expressions!=null && <ItemMenu id='itemMenuDevelopers' text={_expressions.developers}  /> } 
+      { _expressions!=null && <ItemMenu id='itemMenuLanguages' text={_expressions.languages} /> } 
     </>        
   );
 }
