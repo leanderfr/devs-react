@@ -151,7 +151,7 @@ function Main() {
               </div>
 
               <div className='Datatable'>
-                <Datatable />
+                { expressions && <Datatable /> }
               </div>
 
           </div>

@@ -9,31 +9,36 @@ import useState from 'react-usestateref'
 
 function Datatable( props ) {
 
-  // expressions só poderá ser usada quando Main.jsx enviar seu conteudo diferente de 'null'
+  // expressions (frases) no idioma atual
   let { _expressions, _currentMenuItem }  = useContext(SharedContext);  
-
-  // registros da tabela atual (_currentMenuItem)
-  let [records, setRecords, getRecords] = useState(null)
-
-  let columns = [ {name: 'actions', width: '100px'  }]
+  
+  // colunas que serao exibidias dependendo da tabela sendo vista (_currentMenuItem)
+  let columns = []
 
   if (_currentMenuItem === 'itemMenuDevelopers')
-    columns.push({ name: "id", width: "calc(20% - 100px)" },
-                { name: "name", width: "80%"} )
+    columns.push({ fieldname: "id", width: "20%", title: 'Id' },
+                { fieldname: "name", width: "calc(80% - 150px)", title: _expressions.column_name} )
+
+  // ultima coluna, acoes (editar, excluir, etc)
+  columns.push( {name: 'actions', width: '150px', title: ''} )
+
+  
+  // registros da tabela atual (_currentMenuItem)
+  let [records, setRecords, getRecords] = useState(null)
 
   let [isLoading, setIsLoading] = useState(true)
 
   const fetchRecords = async () =>  {
 
-    let resource = ''
+    let resourceFetch = ''
     switch (_currentMenuItem) {
       case 'itemMenuDevelopers':
-        resource = 'developers'
+        resourceFetch = 'developers'
         break;
       default:
     }
 
-    fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=${resource}`)
+    fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=${resourceFetch}`)
     .then((response) => response.json())
     .then((data) => {
 console.log('d='+data)
@@ -81,12 +86,14 @@ console.log('d='+data)
     </div>
 
 
+    {/* looping para exibir cada coluna baseado na tabela atual */}
     <div className="DatatableHeader">
         {columns.map(function (column, i)  {     
-          return( <div key={i} style={{width: column.width }}> {column.name}  </div> );                 
+          return( <div key={i} style={{width: column.width }}> {column.title}  </div> );                 
         })}
     </div>          
 
+    {/* looping para exibir registros da tabela atual */}
     <div className="DatatableRows">
       { records && 
         records.map(function (record)  {     
@@ -94,11 +101,21 @@ console.log('d='+data)
             let row = ''  
             for (let x=0; x < columns.length; x++)  {
               let width = columns[x].width
-              let fieldname = columns[x].name
-              if (x===0)
-                row += `<div style="width: ${width}"> acoes </div>` 
+              let fieldname = columns[x].fieldname
+
+              // monta a linha do registros (row)
+
+              // ultima coluna, acoes (editar, excluir, etc)          
+              if (x===columns.length-1)
+                row += `<div class='actionColumn' style="width: ${width}">`+
+                       `  <div class='actionIcon'><img src='images/edit.svg' /></div>` +
+                       `  <div class='actionIcon'><img src='images/delete.svg' /></div>` +
+                       `  <div class='actionIcon'><img src='images/activate.svg' /></div>` +
+                       ' </div>'
+
+              // outra coluna qualquer (nome, id, etc)
               else
-                row += `<div style="width: ${width} "> ${record[fieldname]}  </div>` 
+                row += `<div style="width: ${width}; padding-left: 5px "> ${record[fieldname]} </div>` 
             }
 
             return(<div className='DatatableRow' key={record.id} dangerouslySetInnerHTML={{__html: row}}></div>)

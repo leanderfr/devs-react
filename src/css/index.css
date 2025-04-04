@@ -364,7 +364,6 @@ background-color:  #FFC266
   color: black;
   height: 40px;
   align-items: center;
-  padding-left:10px;
 }
 
 .DatatableRow {
@@ -377,4 +376,23 @@ background-color:  #FFC266
 .DatatableRow:hover {
 background-color:  #FFC266
 }
+.actionColumn {
+display: flex;
+flex-direction: row;
+padding-left: 5px;
+justify-content: space-between;
+align-items: center;
+}
+.actionIcon { 
+border: solid 1px transparent;
+display: flex;
+justify-content: center;
+align-items: center;
+height:100%;
+flex:1;
+}
+.actionIcon:hover { 
+border: solid 1px navy;
+}
+
 
