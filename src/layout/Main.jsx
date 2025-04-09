@@ -120,7 +120,6 @@ function Main() {
 
     <div className="Content">
 
-      <StrictMode>
 
 
       {/* context => compartilha idioma, expressoes e backend  atual entre os componentes */}
@@ -161,7 +160,6 @@ function Main() {
 
       </SharedContext.Provider>
 
-</StrictMode>
 
 
       { isLoading && 

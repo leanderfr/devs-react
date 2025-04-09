@@ -1,7 +1,7 @@
 
 import '../css/index.css';
 import {  SharedContext } from './Main.jsx';
-import {  useContext, useEffect } from 'react';
+import {  useContext, useEffect, Fragment } from 'react';
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
 // fazer isso com useState padrao do react é muito complicado
@@ -110,28 +110,27 @@ const teste = (j, length) => {
     <div className="DatatableRows">
       { records && 
         records.map(function (record)  {     
+console.log('id='+record.id)
               return(
-               <>
-                <div className='DatatableRow' key={record.id} > 
+                <div className='DatatableRow' key={'reg'+record.id} > 
                 {
                 columns.map(function (col, j, {length}) {
-
-                    return(
-                      <>
+                    return( 
+                      <Fragment key={'col'+j+'1'+record.id} >
                       {j===length-1 ? (
-                            <div key={'col'+j+record.id}  className='actionColumn' style= {{ width: col.width}}  >
-                                <div className='actionIcon' onClick={ () => Crud('edit', record['id']) } ><img alt='' src='images/edit.svg' /></div>
-                                <div className='actionIcon' onClick={ () => Crud('delete', record['id']) }><img alt='' src='images/delete.svg' /></div>
-                                <div className='actionIcon' onClick={ () => Crud('status', record['id']) }><img alt='' src='images/activate.svg' /></div>
+                            <div   className='actionColumn' style= {{ width: col.width}}  >
+                                <div  className='actionIcon' onClick={ () => Crud('edit', record['id']) } ><img key={'i1'+j+record.id} alt='' src='images/edit.svg' /></div>
+                                <div  className='actionIcon' onClick={ () => Crud('delete', record['id']) }><img key={'i1'+j+record.id} alt='' src='images/delete.svg' /></div>
+                                <div  className='actionIcon' onClick={ () => Crud('status', record['id']) }><img key={'i1'+j+record.id} alt='' src='images/activate.svg' /></div>
                             </div>  ) : 
-                      (<div key={'col'+j+record.id}  style={{width: col.width, paddingLeft: '5px'}}> {record[col.fieldname]}  </div>) }
-                      
-                          
-                    </>
+
+                          (<div   style={{width: col.width, paddingLeft: '5px'}}> {record[col.fieldname]}  </div>) 
+
+                      }
+                      </Fragment>
                     )
                 })}
                 </div>
-                </>
               )
         }) }
     </div>
