@@ -15,12 +15,13 @@ function Datatable( props ) {
   // colunas que serao exibidias dependendo da tabela sendo vista (_currentMenuItem)
   let columns = []
 
+  // manipulando tabela de desenvolvedores 
   if (_currentMenuItem === 'itemMenuDevelopers')
-    columns.push({ fieldname: "id", width: "20%", title: 'Id' },
-                { fieldname: "name", width: "calc(80% - 150px)", title: _expressions.column_name} )
+    columns.push({ fieldname: "id", width: "20%", title: 'Id', id: 1 },
+                { fieldname: "name", width: "calc(80% - 150px)", title: _expressions.column_name, id: 2} )
 
   // ultima coluna, acoes (editar, excluir, etc)
-  columns.push( {name: 'actions', width: '150px', title: ''} )
+  columns.push( {name: 'actions', width: '150px', title: '', id: 3} )
 
   
   // registros da tabela atual (_currentMenuItem)
@@ -59,9 +60,20 @@ console.log('d='+data)
           fetchRecords()    
         }, 500);
 
-
-
   }, [records])
+
+  function Crud ( operation, recordId ) {
+
+    alert(operation+'--'+recordId)
+
+
+  }
+
+const teste = (j, length) => {
+  if (j!==length)  return( <div className='DatatableRow' key={'eee'+j} > </div>)
+
+  }
+
 
 
   return (
@@ -88,42 +100,44 @@ console.log('d='+data)
 
     {/* looping para exibir cada coluna baseado na tabela atual */}
     <div className="DatatableHeader">
-        {columns.map(function (column, i)  {     
-          return( <div key={i} style={{width: column.width }}> {column.title}  </div> );                 
+        {columns.map(function (column)  {     
+          return( <div key={column.id} style={{width: column.width }}>dd {column.title}  </div> );                 
         })}
     </div>          
+
 
     {/* looping para exibir registros da tabela atual */}
     <div className="DatatableRows">
       { records && 
         records.map(function (record)  {     
+              return(
+               <>
+                <div className='DatatableRow' key={record.id} > 
+                {
+                columns.map(function (col, j, {length}) {
 
-            let row = ''  
-            for (let x=0; x < columns.length; x++)  {
-              let width = columns[x].width
-              let fieldname = columns[x].fieldname
+                    return(
+                      <>
+                      {j===length-1 ? (
+                            <div key={'col'+j+record.id}  className='actionColumn' style= {{ width: col.width}}  >
+                                <div className='actionIcon' onClick={ () => Crud('edit', record['id']) } ><img alt='' src='images/edit.svg' /></div>
+                                <div className='actionIcon' onClick={ () => Crud('delete', record['id']) }><img alt='' src='images/delete.svg' /></div>
+                                <div className='actionIcon' onClick={ () => Crud('status', record['id']) }><img alt='' src='images/activate.svg' /></div>
+                            </div>  ) : 
+                      (<div key={'col'+j+record.id}  style={{width: col.width, paddingLeft: '5px'}}> {record[col.fieldname]}  </div>) }
+                      
+                          
+                    </>
+                    )
+                })}
+                </div>
+                </>
+              )
+        }) }
+    </div>
 
-              // monta a linha do registros (row)
 
-              // ultima coluna, acoes (editar, excluir, etc)          
-              if (x===columns.length-1)
-                row += `<div class='actionColumn' style="width: ${width}">`+
-                       `  <div class='actionIcon'><img src='images/edit.svg' /></div>` +
-                       `  <div class='actionIcon'><img src='images/delete.svg' /></div>` +
-                       `  <div class='actionIcon'><img src='images/activate.svg' /></div>` +
-                       ' </div>'
-
-              // outra coluna qualquer (nome, id, etc)
-              else
-                row += `<div style="width: ${width}; padding-left: 5px "> ${record[fieldname]} </div>` 
-            }
-
-            return(<div className='DatatableRow' key={record.id} dangerouslySetInnerHTML={{__html: row}}></div>)
-
-        })
-      }
-    </div>          
-
+    
     { isLoading && 
         <div id='backdropWhite'>
           <div id='divLoading' >&nbsp;</div>

@@ -1,5 +1,5 @@
 
-import { useEffect, createContext } from 'react';
+import { useEffect, createContext, StrictMode  } from 'react';
 
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
@@ -120,6 +120,9 @@ function Main() {
 
     <div className="Content">
 
+      <StrictMode>
+
+
       {/* context => compartilha idioma, expressoes e backend  atual entre os componentes */}
       <SharedContext.Provider 
         value={{ 
@@ -157,6 +160,9 @@ function Main() {
           </div>
 
       </SharedContext.Provider>
+
+</StrictMode>
+
 
       { isLoading && 
           <div id='backdropWhite'>
