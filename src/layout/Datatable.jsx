@@ -2,6 +2,7 @@
 import '../css/index.css';
 import {  SharedContext } from './Main.jsx';
 import {  useContext, useEffect, Fragment } from 'react';
+import CrudForm from './CrudForm.jsx'
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
 // fazer isso com useState padrao do react é muito complicado
@@ -33,10 +34,11 @@ function Datatable( props ) {
   let [isLoading, setIsLoading] = useState(true)
 
   // exibe formulario de CRUD 
+  let [calledCrudForm, setCalledCrudForm, getCalledCrudForm] = useState('')
   let [crudFormOperation, setCrudFormOperation, getCrudFormOperation] = useState('')
   let [crudFormRecordId, setCrudFormRecordId, getCrudFormRecordId] = useState('')
+  let [crudFormTable, setCrudFormTable, getCrudFormTable] = useState('')
 
-  console.log('aqui='+getCrudFormOperation.current)
 
   // le registros da tabela atual
   const fetchRecords = async () =>  {
@@ -63,6 +65,8 @@ function Datatable( props ) {
       // força 1/2 segundo de parada para que usuario perceba que esta recarregando
       if ( getRecords.current == null )    
         setTimeout(() => {
+          // memoriza qual tabela atual
+          if (_currentMenuItem==='itemMenuDevelopers') setCrudFormTable('developers')
           fetchRecords()    
         }, 500);
 
@@ -72,8 +76,14 @@ function Datatable( props ) {
   const Crud = ( operation, recordId ) => {
      setCrudFormOperation( operation )
      setCrudFormRecordId( recordId )
+     setCalledCrudForm(true)
   }
 
+  // fecha form de Crud
+  const closeCrudForm = event => {
+    // so fecha se clicou no backdrop
+    if (event.target === event.currentTarget) setCalledCrudForm(false)
+  }
 
 
   return (
@@ -128,7 +138,6 @@ function Datatable( props ) {
                                 </div>  ) : 
 
                               (<div style={{width: col.width, paddingLeft: '5px'}}> {record[col.fieldname]}  </div>) 
-
                           }
                       </Fragment>
                     )
@@ -138,15 +147,22 @@ function Datatable( props ) {
         }) }
     </div>
 
-    { getCrudFormOperation.current!='' && <div>dsjklsjdkldsjlklsjkd</div> }
+    {/* se o form de CRUD foi acionado */}
+    { getCalledCrudForm.current  && _currentMenuItem === 'itemMenuDevelopers' &&   
+        <div id='backdropGray' onClick={closeCrudForm} >
+          <CrudForm 
+              operation={getCrudFormOperation.current} 
+              recordId={getCrudFormRecordId.current}
+              table={getCrudFormTable.current}
+          />
+        </div>
+    }
     
     { isLoading &&  
         <div id='backdropWhite'>
           <div id='divLoading' >&nbsp;</div>
         </div>
     }
-
-
     
 
   </>

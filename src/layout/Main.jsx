@@ -1,5 +1,5 @@
 
-import { useEffect, createContext, StrictMode  } from 'react';
+import { useEffect, createContext  } from 'react';
 
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
