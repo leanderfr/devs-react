@@ -21,6 +21,7 @@ import {Spinner} from 'spin.js';
 
 export const SharedContext = createContext();
 
+export const backendUrl = 'http://localhost:8071'
 
 function Main() {
 
@@ -61,7 +62,7 @@ function Main() {
     let _isUSAChecked = getUSAChecked.current
     let language = _isUSAChecked ? 'english' : 'portuguese';
 
-    fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=expressions&language=${language}`)
+    fetch(`${backendUrl}/expressions/${language}`)
     .then((response) => response.json())
     .then((data) => {
       setIsLoading(false)

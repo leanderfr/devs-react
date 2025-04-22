@@ -1,6 +1,6 @@
 
 import '../css/index.css';
-import {  SharedContext } from './Main.jsx';
+import {  SharedContext, backendUrl } from './Main.jsx';
 import {  useContext, useEffect, Fragment } from 'react';
 import CrudForm from './CrudForm.jsx'
 
@@ -50,7 +50,7 @@ function Datatable( props ) {
       default:
     }
 
-    fetch(`https://leanderdeveloper.store/devs-react/ajax.php?action=${resourceFetch}`)
+    fetch(`${backendUrl}/${resourceFetch}`)
     .then((response) => response.json())
     .then((data) => {
       setIsLoading(false)
