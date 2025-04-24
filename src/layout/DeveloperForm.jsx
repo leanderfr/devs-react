@@ -7,6 +7,8 @@ import {  backendUrl } from './Main.jsx';
 // fazer isso com useState padrao do react é muito complicado
 import useState from 'react-usestateref'
 
+import { prepareLoadingAnimation  } from '../js/utils.js';
+
 
 function DeveloperForm( props )    {
 
@@ -20,6 +22,8 @@ function DeveloperForm( props )    {
     // obtem detalhes sobre qual registro editar
     const {operation, recordId, table} = props;
 
+    let [isLoading, setIsLoading] = useState(true)
+
 
     // carrega html do formulario
     const fetchDeveloper = async () =>  {
@@ -27,22 +31,33 @@ function DeveloperForm( props )    {
         fetch(`${backendUrl}/developers/${recordId}`, { method: "GET" })
         .then((response) => response.json())
         .then((data) => {
-          setDeveloper(data)
-//          props.setIsLoading(false)
+            setTimeout(() => {
+            setDeveloper(data)  
+            }, 500);
+
+          setIsLoading(false)
         })
         .catch((error) => console.log('erro='+error));
     }
 
     useEffect( () => {
-      // carrega dados do developer atual
-      // força 1/2 segundo de parada para que usuario perceba que esta recarregando
-      if ( getDeveloper.current == null )    
-        props.setIsLoading(true)
+        prepareLoadingAnimation()
 
-        setTimeout(() => {
-          fetchDeveloper()    
-        }, 500);
+        // carrega dados do developer atual
+        // força 1/2 segundo de parada para que usuario perceba que esta recarregando
+        if ( getDeveloper.current == null )    
+          setIsLoading(true)
+
+          setTimeout(() => {
+            fetchDeveloper()    
+          }, 500);
     } )
+
+  // fecha form de Crud
+  const closeCrudForm = event => {
+    // so fecha se clicou no backdrop
+    if (event.target === event.currentTarget) props.closeCrudForm()
+  }
 
 
     return(
@@ -50,14 +65,28 @@ function DeveloperForm( props )    {
         <>
 
             { developer && 
+              <div className='backdropGray'  onClick={closeCrudForm}>     
 
-                  <div className='flex flex-col px-3'>
-                    <label htmlFor='txtName'>s{ expressions.name} </label>
-                    <input name='txtName' defaultValue={ developer.name }  style={{ width: '100%'}} />
+                  <div className='crudForm'>
+
+                      <div className='flex flex-col px-3'>
+                        <label htmlFor='txtName'>s{ expressions.name} </label>
+                        <input name='txtName' defaultValue={ developer.name }  style={{ width: '100%'}} />
+                      </div>
+
                   </div>
+              </div>
 
 
             }
+
+            {/* animacao 'carregando...' */}
+            { isLoading && 
+                <div className='backdropTransparent'  >
+                  <div id='divLoading' >&nbsp;</div>
+                </div>
+            }
+
 
       </>
     )  

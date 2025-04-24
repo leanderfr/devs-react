@@ -669,10 +669,6 @@ input:checked + .slider_language:before {
   background-color: white;
 }
 
-.teste {
-  font-size:40px
-}
-
 .Content {
   display: flex;
   flex-direction: row;
@@ -844,9 +840,9 @@ input:checked + .slider_language:before {
   display:flex;
 }
 
-#backdropWhite {
+.backdropTransparent {
   position: absolute;
-  background-color: rgba(255,0,0,0.1);
+  background-color: transparent;
   left: 0;
   top: 0;
   overflow: visible;
@@ -858,7 +854,7 @@ input:checked + .slider_language:before {
   align-items: center;
 }
 
-#backdropGray {
+.backdropGray {
   position: absolute;
   overflow: visible;
   background-color: rgba(0,0,0,0.1);

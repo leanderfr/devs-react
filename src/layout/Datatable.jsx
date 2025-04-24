@@ -48,7 +48,6 @@ function Datatable( props ) {
     fetch(`${backendUrl}/${resourceFetch}`, { method: "GET" })
     .then((response) => response.json())
     .then((data) => {
-      //props.setIsLoading(false)
       setRecords(data)
     })
     .catch((error) => console.log('erro='+error));
@@ -68,8 +67,6 @@ function Datatable( props ) {
 
   // chama form para CRUD de alguma tabela 
   const Crud = ( operation, recordId ) => {
-//    props.prepareLoadingAnimation(true)
-//    props.setIsLoading(true)
     setCrudFormOperation( operation )
     setCrudFormRecordId( recordId )
     setCalledCrudForm(true)
@@ -77,8 +74,7 @@ function Datatable( props ) {
 
   // fecha form de Crud
   const closeCrudForm = event => {
-    // so fecha se clicou no backdrop
-    if (event.target === event.currentTarget) setCalledCrudForm(false)
+    setCalledCrudForm(false)
   }
 
   return (
@@ -144,12 +140,12 @@ function Datatable( props ) {
 
     {/* se a edicao de developer foi acionada */}
     { getCalledCrudForm.current  && _currentMenuItem === 'itemMenuDevelopers' &&   
-          <div id='backdropGray' onClick={closeCrudForm}  >     
-            <DeveloperForm  expressions={_expressions}  setIsLoading={props.setIsLoading}  
+            <DeveloperForm  
+                expressions={_expressions}    
                 operation={getCrudFormOperation.current} 
                 recordId={getCrudFormRecordId.current}
+                closeCrudForm = {closeCrudForm}
             />
-          </div>
     }
     
   </>
