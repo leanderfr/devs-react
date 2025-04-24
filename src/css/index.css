@@ -1,10 +1,15 @@
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 0;
   margin: 0;
+  overflow: visible;
 }
 
 
@@ -259,16 +264,13 @@ display:flex;
 
 #backdropWhite {
 position: absolute;
-/*background-color: rgba(0,0,0,0.1);*/
-background-color: transparent;
+background-color: rgba(255,0,0,0.1);
 left: 0;
 top: 0;
+  overflow: visible;
 width: 100%;
 height: 100%;
-z-index: 8000;
 z-index: 8001;
-width: 100%;
-height: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -276,15 +278,13 @@ align-items: center;
 
 #backdropGray {
 position: absolute;
+  overflow: visible;
 background-color: rgba(0,0,0,0.1);
+width: 100%;
+height: 100%;
 left: 0;
 top: 0;
-width: 100%;
-height: 100%;
-z-index: 8000;
 z-index: 8001;
-width: 100%;
-height: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -412,8 +412,8 @@ border: solid 1px navy;
 }
 
 .crudForm {
-width: 500px;
-height: 300px;
+width: auto;
+height: auto;
 border: solid 1x gray;
 border-radius: 5px;
 background-color: white;

@@ -21,7 +21,8 @@ import {Spinner} from 'spin.js';
 
 export const SharedContext = createContext();
 
-export const backendUrl = 'http://ec2-54-94-203-105.sa-east-1.compute.amazonaws.com:8071'
+//export const backendUrl = 'http://ec2-54-94-203-105.sa-east-1.compute.amazonaws.com:8071'
+export const backendUrl = 'http://localhost:3001'
 
 function Main() {
 
@@ -34,12 +35,11 @@ function Main() {
   // controla item do menu lateral (sidebar) atualmente clicado
   let [currentMenuItem, setCurrentMenuItem] = useState('itemMenuDevelopers')
 
-
   let [isLoading, setIsLoading] = useState(true)
 
   // expressoes/frases usadas dependendo do idioma selecionado
   let [expressions, setExpressions, getExpressions] = useState(null)
-//  const [error, setError] = useState(null)
+  
 
   // usuario mudou idioma atual em Header.jsx, recarrega 
   const changeLanguageAndReload = ( isUSAChecked ) => {
@@ -49,8 +49,7 @@ function Main() {
   } 
 
   // usuario mudou backend em header.jsx, recarrega 
-  const changeBackendAndReload = ( backend ) => {
-    setIsLoading(true)
+  const changeBackendAndReload = ( backend ) => {    
     setCurrentBackend(backend)   
     setExpressions(null)   // dispara useEffect 
   } 
@@ -58,23 +57,19 @@ function Main() {
 
 
   const fetchExpressions = async () =>  {
-
     let _isUSAChecked = getUSAChecked.current
     let language = _isUSAChecked ? 'english' : 'portuguese';
 
     fetch(`${backendUrl}/expressions/${language}`)
     .then((response) => response.json())
     .then((data) => {
-      setIsLoading(false)
       setExpressions(data);
+      setIsLoading(false)  
     })
     .catch((error) => console.log('erro='+error));
-
   }
 
-
-  useEffect( () => {
-
+  useEffect( () => {      
       // react exibe/remove animacao ajax, necessario refazer propriedades da animacao sempre que for reexibida (useEffect)
       var opts = {
         lines: 12 // The number of lines to draw
@@ -111,17 +106,21 @@ function Main() {
         setTimeout(() => {
           fetchExpressions()    
         }, 500);
-
-
-
   }, [expressions])
 
 
   return (
 
+<>
+<>
+      {/* animacao 'carregando...' */}
+      <div id='backdropWhite' style={{ visibility: isLoading ? 'visible' : 'hidden' }} >
+        <div id='divLoading' >&nbsp;</div>
+      </div>
+
+
+</>
     <div className="Content">
-
-
 
       {/* context => compartilha idioma, expressoes e backend  atual entre os componentes */}
       <SharedContext.Provider 
@@ -154,23 +153,17 @@ function Main() {
               </div>
 
               <div className='Datatable'>
-                { expressions && <Datatable /> }
+                { expressions && <Datatable setIsLoading={setIsLoading}   /> }
               </div>
 
           </div>
 
       </SharedContext.Provider>
 
-
-
-      { isLoading && 
-          <div id='backdropWhite'>
-            <div id='divLoading' >&nbsp;</div>
-          </div>
-      }
-
-
     </div>    
+</>
+
+
   );
 }
 

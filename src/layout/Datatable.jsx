@@ -2,7 +2,7 @@
 import '../css/index.css';
 import {  SharedContext, backendUrl } from './Main.jsx';
 import {  useContext, useEffect, Fragment } from 'react';
-import CrudForm from './CrudForm.jsx'
+import DeveloperForm from './DeveloperForm.jsx'
 
 // useState de 'Aminadav Glickshtein' permite 3o parametro para obter estado atual da variavel
 // fazer isso com useState padrao do react é muito complicado
@@ -13,7 +13,6 @@ function Datatable( props ) {
   // expressions (frases) no idioma atual e item do menu lateral que foi clicado
   let { _expressions, _currentMenuItem }  = useContext(SharedContext);  
 
-  
   // colunas que serao exibidias dependendo da tabela sendo vista (_currentMenuItem)
   let columns = []
 
@@ -30,14 +29,10 @@ function Datatable( props ) {
   // registros da tabela atual (_currentMenuItem)
   let [records, setRecords, getRecords] = useState(null)
 
-  // exibe animacao de carregamento pagina
-  let [isLoading, setIsLoading] = useState(true)
-
   // exibe formulario de CRUD 
   let [calledCrudForm, setCalledCrudForm, getCalledCrudForm] = useState('')
   let [crudFormOperation, setCrudFormOperation, getCrudFormOperation] = useState('')
   let [crudFormRecordId, setCrudFormRecordId, getCrudFormRecordId] = useState('')
-  let [crudFormTable, setCrudFormTable, getCrudFormTable] = useState('')
 
 
   // le registros da tabela atual
@@ -50,10 +45,10 @@ function Datatable( props ) {
       default:
     }
 
-    fetch(`${backendUrl}/${resourceFetch}`)
+    fetch(`${backendUrl}/${resourceFetch}`, { method: "GET" })
     .then((response) => response.json())
     .then((data) => {
-      setIsLoading(false)
+      //props.setIsLoading(false)
       setRecords(data)
     })
     .catch((error) => console.log('erro='+error));
@@ -66,7 +61,6 @@ function Datatable( props ) {
       if ( getRecords.current == null )    
         setTimeout(() => {
           // memoriza qual tabela atual
-          if (_currentMenuItem==='itemMenuDevelopers') setCrudFormTable('developers')
           fetchRecords()    
         }, 500);
 
@@ -74,9 +68,11 @@ function Datatable( props ) {
 
   // chama form para CRUD de alguma tabela 
   const Crud = ( operation, recordId ) => {
-     setCrudFormOperation( operation )
-     setCrudFormRecordId( recordId )
-     setCalledCrudForm(true)
+//    props.prepareLoadingAnimation(true)
+//    props.setIsLoading(true)
+    setCrudFormOperation( operation )
+    setCrudFormRecordId( recordId )
+    setCalledCrudForm(true)
   }
 
   // fecha form de Crud
@@ -84,7 +80,6 @@ function Datatable( props ) {
     // so fecha se clicou no backdrop
     if (event.target === event.currentTarget) setCalledCrudForm(false)
   }
-
 
   return (
     <>
@@ -147,26 +142,17 @@ function Datatable( props ) {
         }) }
     </div>
 
-    {/* se o form de CRUD foi acionado */}
+    {/* se a edicao de developer foi acionada */}
     { getCalledCrudForm.current  && _currentMenuItem === 'itemMenuDevelopers' &&   
-        <div id='backdropGray' onClick={closeCrudForm} >
-          <CrudForm 
-              operation={getCrudFormOperation.current} 
-              recordId={getCrudFormRecordId.current}
-              table={getCrudFormTable.current}
-          />
-        </div>
+          <div id='backdropGray' onClick={closeCrudForm}  >     
+            <DeveloperForm  expressions={_expressions}  setIsLoading={props.setIsLoading}  
+                operation={getCrudFormOperation.current} 
+                recordId={getCrudFormRecordId.current}
+            />
+          </div>
     }
     
-    { isLoading &&  
-        <div id='backdropWhite'>
-          <div id='divLoading' >&nbsp;</div>
-        </div>
-    }
-    
-
   </>
-
   )
 }
 
